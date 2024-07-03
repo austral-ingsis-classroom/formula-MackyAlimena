@@ -1,0 +1,33 @@
+@startuml
+class Function {
+  +evaluate(Map<String, Double> variables): double
+  +print(): String
+}
+
+class Constant {
+  -value: double
+  +Constant(double value)
+  +evaluate(Map<String, Double> variables): double
+  +print(): String
+}
+
+class Variable {
+  -name: String
+  +Variable(String name)
+  +evaluate(Map<String, Double> variables): double
+  +print(): String
+}
+
+class Operation {
+  -left: Function
+  -right: Function
+  -operator: String
+  +Operation(Function left, Function right, String operator)
+  +evaluate(Map<String, Double> variables): double
+  +print(): String
+}
+
+Function <|-- Constant
+Function <|-- Variable
+Function <|-- Operation
+@enduml
