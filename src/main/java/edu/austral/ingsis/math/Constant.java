@@ -20,4 +20,9 @@ public class Constant extends FunctionImpl {
     public Set<String> getVariables() {
         return Collections.emptySet();
     }
+
+    @Override
+    public String print() {
+        return String.valueOf(value);
+    }
 }

@@ -24,4 +24,8 @@ public class Variable extends FunctionImpl{
     public Set<String> getVariables() {
         return Collections.singleton(name);
     }
+
+    public String getName() {
+        return name;
+    }
 }
