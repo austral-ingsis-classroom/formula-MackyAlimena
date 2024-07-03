@@ -7,4 +7,5 @@ public abstract class FunctionImpl implements Function {
     public String print() {
         return this.getClass().getSimpleName();
     }
+
 }
