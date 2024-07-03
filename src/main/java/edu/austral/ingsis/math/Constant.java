@@ -25,4 +25,8 @@ public class Constant extends FunctionImpl {
     public String print() {
         return String.valueOf(value);
     }
+
+    public Object getValue() {
+        return value;
+    }
 }
