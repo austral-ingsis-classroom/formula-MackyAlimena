@@ -1,5 +1,6 @@
 package edu.austral.ingsis.math.binary;
 
+import edu.austral.ingsis.math.Formatter;
 import edu.austral.ingsis.math.Function;
 
 import java.util.Map;
@@ -7,7 +8,7 @@ import java.util.Map;
 public class Pow extends BinaryOperation {
 
     public Pow(Function left, Function right) {
-        super(left, right);
+        super(left, right, BinaryOperators.EXPONENTIATION);
     }
 
     @Override
@@ -19,8 +20,6 @@ public class Pow extends BinaryOperation {
 
     @Override
     public String print() {
-        String basePrint = left instanceof BinaryOperation ? "(" + left.print() + ")" : left.print();
-        String exponentPrint = right instanceof BinaryOperation ? "(" + right.print() + ")" : right.print();
-        return basePrint + " ^ " + exponentPrint;
+        return Formatter.format(this);
     }
 }

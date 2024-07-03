@@ -1,24 +1,21 @@
 package edu.austral.ingsis.math.binary;
 
-import edu.austral.ingsis.math.Constant;
 import edu.austral.ingsis.math.Function;
 import edu.austral.ingsis.math.FunctionImpl;
-import edu.austral.ingsis.math.Variable;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BinaryOperator;
 
 public abstract class BinaryOperation extends FunctionImpl {
     protected final Function left;
     protected final Function right;
-    protected BinaryOperator operator;
+    protected BinaryOperators operator;
 
-    public BinaryOperation(Function left, Function right) {
+    public BinaryOperation(Function left, Function right, BinaryOperators operator) {
         this.left = left;
         this.right = right;
+        this.operator = operator;
     }
 
     @Override
@@ -37,8 +34,7 @@ public abstract class BinaryOperation extends FunctionImpl {
         return right;
     }
 
-    public BinaryOperator getOperator() {
+    public BinaryOperators getOperator() {
         return operator;
     }
 }
-

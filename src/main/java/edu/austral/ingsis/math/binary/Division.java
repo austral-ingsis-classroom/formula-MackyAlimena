@@ -1,12 +1,13 @@
 package edu.austral.ingsis.math.binary;
 
+import edu.austral.ingsis.math.Formatter;
 import edu.austral.ingsis.math.Function;
 
 import java.util.Map;
 
 public class Division extends BinaryOperation {
     public Division(Function left, Function right) {
-        super(left, right);
+        super(left, right, BinaryOperators.DIVISION);
     }
 
     @Override
@@ -20,6 +21,6 @@ public class Division extends BinaryOperation {
 
     @Override
     public String print() {
-        return left.print() + " ÷ " + right.print();
+        return Formatter.format(this);
     }
 }

@@ -1,5 +1,6 @@
 package edu.austral.ingsis.math.unary;
 
+import edu.austral.ingsis.math.Constant;
 import edu.austral.ingsis.math.Function;
 import edu.austral.ingsis.math.FunctionImpl;
 

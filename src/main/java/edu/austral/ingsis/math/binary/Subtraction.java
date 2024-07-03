@@ -1,12 +1,13 @@
 package edu.austral.ingsis.math.binary;
 
+import edu.austral.ingsis.math.Formatter;
 import edu.austral.ingsis.math.Function;
 
 import java.util.Map;
 
 public class Subtraction extends BinaryOperation {
     public Subtraction(Function left, Function right) {
-        super(left, right);
+        super(left, right, BinaryOperators.SUBTRACTION);
     }
 
     @Override
@@ -16,6 +17,6 @@ public class Subtraction extends BinaryOperation {
 
     @Override
     public String print() {
-        return left.print() + " - " + right.print();
+        return Formatter.format(this);
     }
 }

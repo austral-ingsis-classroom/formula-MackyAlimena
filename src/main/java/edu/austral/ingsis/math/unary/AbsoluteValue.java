@@ -1,5 +1,6 @@
 package edu.austral.ingsis.math.unary;
 
+import edu.austral.ingsis.math.Formatter;
 import edu.austral.ingsis.math.Function;
 
 import java.util.Map;
@@ -17,7 +18,7 @@ public class AbsoluteValue extends UnaryOperation {
 
     @Override
     public String print() {
-        return "|" + operand.print() + "|";
+        return Formatter.format(this);
     }
 }
 

@@ -1,12 +1,13 @@
 package edu.austral.ingsis.math.binary;
 
+import edu.austral.ingsis.math.Formatter;
 import edu.austral.ingsis.math.Function;
 
 import java.util.Map;
 
 public class Addition extends BinaryOperation {
     public Addition(Function left, Function right) {
-        super(left, right);
+        super(left, right, BinaryOperators.ADDITION);
     }
 
     @Override
@@ -16,6 +17,7 @@ public class Addition extends BinaryOperation {
 
     @Override
     public String print() {
-        return left.print() + " + " + right.print();
+        return Formatter.format(this);
     }
+
 }
