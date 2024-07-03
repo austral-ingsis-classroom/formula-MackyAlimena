@@ -6,6 +6,8 @@ import static org.hamcrest.Matchers.empty;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 
 public class ListVariablesTest {
@@ -13,7 +15,8 @@ public class ListVariablesTest {
   /** Case 1 + 6 */
   @Test
   public void shouldListVariablesFunction1() {
-    final List<String> result = Collections.emptyList();
+    Function function = new Operation(new Constant(1), new Constant(6), "+");
+    final Set<String> result = function.getVariables();
 
     assertThat(result, empty());
   }
@@ -21,7 +24,11 @@ public class ListVariablesTest {
   /** Case 12 / div */
   @Test
   public void shouldListVariablesFunction2() {
-    final List<String> result = Collections.emptyList();
+    Function twelve = new Constant(12);
+    Function divVariable = new Variable("div");
+    Function division = new Operation(twelve, divVariable, "/");
+
+    final Set<String> result = division.getVariables();
 
     assertThat(result, containsInAnyOrder("div"));
   }
@@ -29,7 +36,13 @@ public class ListVariablesTest {
   /** Case (9 / x) * y */
   @Test
   public void shouldListVariablesFunction3() {
-    final List<String> result = Collections.emptyList();
+    Function nine = new Constant(9);
+    Function xVariable = new Variable("x");
+    Function division = new Operation(nine, xVariable, "/");
+    Function yVariable = new Variable("y");
+    Function multiplication = new Operation(division, yVariable, "*");
+
+    final Set<String> result = multiplication.getVariables();
 
     assertThat(result, containsInAnyOrder("x", "y"));
   }
@@ -37,7 +50,13 @@ public class ListVariablesTest {
   /** Case (27 / a) ^ b */
   @Test
   public void shouldListVariablesFunction4() {
-    final List<String> result = Collections.emptyList();
+    Function twentySeven = new Constant(27);
+    Function aVar = new Variable("a");
+    Function division = new Operation(twentySeven, aVar, "/");
+    Function bVar = new Variable("b");
+    Function exponentiation = new Operation(division, bVar, "^");
+
+    final Set<String> result = exponentiation.getVariables();
 
     assertThat(result, containsInAnyOrder("a", "b"));
   }
@@ -45,23 +64,33 @@ public class ListVariablesTest {
   /** Case z ^ (1/2) */
   @Test
   public void shouldListVariablesFunction5() {
-    final List<String> result = Collections.emptyList();
+    Function zVariable = new Variable("z");
+    Function half = new Constant(0.5);
+    Function squareRoot = new Operation(zVariable, half, "^");
 
-    assertThat(result, containsInAnyOrder("z"));
+    final Set<String> result = squareRoot.getVariables();
   }
 
   /** Case |value| - 8 */
   @Test
   public void shouldListVariablesFunction6() {
-    final List<String> result = Collections.emptyList();
+  Function valueVariable = new Variable("value");
+  Function eight = new Constant(8);
+  Function subtraction = new Operation(valueVariable, eight, "-");
 
-    assertThat(result, containsInAnyOrder("value"));
-  }
+  final Set<String> result = subtraction.getVariables();
+
+  assertThat(result, containsInAnyOrder("value"));
+}
 
   /** Case |value| - 8 */
   @Test
   public void shouldListVariablesFunction7() {
-    final List<String> result = Collections.emptyList();
+    Function valueVariable = new Variable("value");
+    Function eight = new Constant(8);
+    Function subtraction = new Operation(valueVariable, eight, "-");
+
+    final Set<String> result = subtraction.getVariables();
 
     assertThat(result, containsInAnyOrder("value"));
   }
@@ -69,7 +98,13 @@ public class ListVariablesTest {
   /** Case (5 - i) * 8 */
   @Test
   public void shouldListVariablesFunction8() {
-    final List<String> result = Collections.emptyList();
+    Function five = new Constant(5);
+    Function iVar = new Variable("i");
+    Function subtraction = new Operation(five, iVar, "-");
+    Function eight = new Constant(8);
+    Function multiplication = new Operation(subtraction, eight, "*");
+
+    final Set<String> result = multiplication.getVariables();
 
     assertThat(result, containsInAnyOrder("i"));
   }
