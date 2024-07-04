@@ -6,13 +6,18 @@ import java.util.Stack;
 
 
 public class MathEvaluator {
-    private final Map<String, Double> variables = new HashMap<>();
+    final Map<String, Double> variables = new HashMap<>();
+    private final Stack<Double> numbers = new Stack<>();
+
+    public void addVariable(String name, Double value) {
+        variables.put(name, value);
+    }
 
     public void setVariable(String name, Double value) {
         variables.put(name, value);
     }
 
-    public static double evaluate(String expression) {
+    public static double evaluate(String expression, Map<String, Double> variables) {
         if (expression == null || expression.trim().isEmpty()) {
             throw new IllegalArgumentException("Invalid expression: Expression is empty");
         }
@@ -38,7 +43,7 @@ public class MathEvaluator {
                     if (expression.charAt(j) == ')') parenthesisCount--;
                     if (parenthesisCount == 0) break;
                 }
-                double innerValue = evaluate(expression.substring(i + 1, j));
+                double innerValue = evaluate(expression.substring(i + 1, j), variables);
                 numbers.push(innerValue);
                 i = j;
 
@@ -47,11 +52,24 @@ public class MathEvaluator {
                 while (j < expression.length() && expression.charAt(j) != '|') {
                     j++;
                 }
-                double innerValue = evaluate(expression.substring(i + 1, j));
-                numbers.push(innerValue);
+                double innerValue = evaluate(expression.substring(i + 1, j), variables);
+                numbers.push(Math.abs(innerValue));
                 operations.push(c); // Push the '|' character onto the operations stack
                 i = j;
-            }else if (isOperator(c)) {
+            } else if (Character.isLetter(c)) {
+                StringBuilder varBuilder = new StringBuilder();
+                while (i < expression.length() && Character.isLetter(expression.charAt(i))) {
+                    varBuilder.append(expression.charAt(i));
+                    i++;
+                }
+                i--; // Adjust because for loop will increment i
+                String varName = varBuilder.toString();
+                if (variables.containsKey(varName)) {
+                    numbers.push(variables.get(varName));
+                } else {
+                    throw new IllegalArgumentException("Invalid expression: Unknown variable " + varName);
+                }
+            } else if (isOperator(c)) {
                 while (!operations.isEmpty() && precedence(operations.peek()) >= precedence(c)) {
                     if (numbers.size() < 2) {
                         throw new IllegalArgumentException("Invalid expression: Not enough operands for operation.");
@@ -62,25 +80,26 @@ public class MathEvaluator {
                     double result = applyOp(firstOperand, secondOperand, op);
                     numbers.push(result);
                 }
-            operations.push(c);
+                operations.push(c);
             }
         }
 
         while (!operations.isEmpty()) {
             if (numbers.size() < 2) {
-                throw new IllegalArgumentException("Invalid expression: Not enough operands for final operations.");
+                if (operations.size() == 1) {
+                    // Handle the case when there are no more operations to perform
+                    return numbers.pop();
+                } else {
+                    throw new IllegalArgumentException("Invalid expression: Not enough operands for final operations.");
+                }
             }
             double secondOperand = numbers.pop();
             double firstOperand = numbers.pop();
             char op = operations.pop();
-            if (op == '|') {
-                double result = Math.abs(firstOperand); // Take the absolute value
-                numbers.push(result);
-            } else {
-                double result = applyOp(firstOperand, secondOperand, op);
-                numbers.push(result);
-            }
+            double result = applyOp(firstOperand, secondOperand, op);
+            numbers.push(result);
         }
+
         if (numbers.size() == 1) {
             return numbers.pop();
         } else {
@@ -89,7 +108,7 @@ public class MathEvaluator {
     }
 
     private static boolean isOperator(char c) {
-        return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
+        return c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == 'd';
     }
 
     private static int precedence(char op) {
@@ -99,6 +118,7 @@ public class MathEvaluator {
                 return 1;
             case '*':
             case '/':
+            case 'd':
                 return 2;
             case '^':
                 return 3;
@@ -116,6 +136,7 @@ public class MathEvaluator {
             case '*':
                 return a * b;
             case '/':
+            case 'd':
                 if (b == 0)
                     throw new UnsupportedOperationException("Cannot divide by zero");
                 return a / b;
